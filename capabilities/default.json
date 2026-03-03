@@ -1,0 +1,29 @@
+{
+  "identifier": "default",
+  "description": "Default permissions for Hooj",
+  "windows": ["main"],
+  "permissions": [
+    "core:default",
+    "shell:allow-execute",
+    "shell:allow-stdin-write",
+    "shell:allow-kill",
+    "shell:allow-open",
+    "dialog:allow-open",
+    "dialog:allow-save",
+    {
+      "identifier": "shell:allow-execute",
+      "allow": [
+        {
+          "name": "binaries/ffmpeg",
+          "sidecar": true,
+          "args": true
+        },
+        {
+          "name": "binaries/ffprobe",
+          "sidecar": true,
+          "args": true
+        }
+      ]
+    }
+  ]
+}

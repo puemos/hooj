@@ -1,0 +1,25 @@
+# Rust
+/target
+debug/
+**/*.rs.bk
+
+# Frontend
+frontend/node_modules/
+frontend/dist/
+
+# Tauri
+binaries/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Environment
+.env
+.env.*
