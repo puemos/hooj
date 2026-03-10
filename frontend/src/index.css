@@ -1,0 +1,147 @@
+@import 'tailwindcss';
+
+@theme inline {
+  /* Ultra-light cream/sandy backgrounds */
+  --color-zinc-925: #fdfcfb;
+  --color-zinc-950: #f5f3ef;
+  --color-zinc-900: #ece8e3;
+  --color-zinc-800: #ddd9d3;
+  --color-zinc-700: #c8c3bc;
+
+  /* Text / Foreground: Crisp near-black */
+  --color-zinc-400: #7a766f;
+  --color-zinc-50: #1d1b19;
+
+  /* Redefined base Shadcn variables using the new colors */
+  --radius: 0.5rem; /* tighter, more tool-like */
+  --color-background: var(--color-zinc-950);
+  --color-foreground: var(--color-zinc-50);
+
+  /* Muted and borders: more visible */
+  --color-muted: var(--color-zinc-900);
+  --color-muted-foreground: var(--color-zinc-400);
+  --color-border: var(--color-zinc-800);
+  --color-input: var(--color-zinc-800);
+  --color-ring: var(--color-zinc-700);
+
+  /* Primary: soft accents */
+  --color-primary: var(--color-zinc-50);
+  --color-primary-foreground: var(--color-zinc-950);
+
+  /* Secondary blends elegantly with the background */
+  --color-secondary: var(--color-zinc-900);
+  --color-secondary-foreground: var(--color-zinc-50);
+
+  /* Popover: solid background for floating menus */
+  --color-popover: var(--color-zinc-950);
+  --color-popover-foreground: var(--color-zinc-50);
+
+  /* Accent: for hover states on ghost buttons, very light */
+  --color-accent: var(--color-zinc-900);
+  --color-accent-foreground: var(--color-zinc-50);
+
+  /* Destructive: more saturated red */
+  --color-destructive: #c24040;
+  --color-destructive-foreground: #faf9f6;
+
+  /* Success: king's green for primary CTAs like Export */
+  --color-success: #30A46C;
+  --color-success-foreground: #ffffff;
+
+  /* Playhead — warm dark brown */
+  --color-playhead: #4a3f3a;
+
+  /* Tooltip / inverted surfaces */
+  --color-tooltip: #3d3835;
+  --color-tooltip-foreground: #f5f2ee;
+
+  /* Drop indicator accent */
+  --color-accent-indicator: #a68b70;
+
+  /* Warm off-white for text on colored segments */
+  --color-segment-text: #faf5f0;
+
+  /* Muted, warm-shifted segment palette */
+  --color-segment-1: #5b82b8;
+  --color-segment-2: #5e9e7e;
+  --color-segment-3: #c49356;
+  --color-segment-4: #8d7aab;
+  --color-segment-5: #b86b6b;
+  --color-segment-6: #6a9ea8;
+  --color-segment-7: #c07a4f;
+  --color-segment-8: #6a9b8a;
+
+  /* Shadow scale */
+  --shadow-xs: 0 1px 2px 0 rgba(0, 0, 0, 0.04);
+  --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.06), 0 1px 2px -1px rgba(0, 0, 0, 0.06);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.07), 0 2px 4px -2px rgba(0, 0, 0, 0.07);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -4px rgba(0, 0, 0, 0.08);
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', 'Roboto', sans-serif;
+  background: var(--color-background);
+  color: var(--color-foreground);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  letter-spacing: -0.01em;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: #c8c3bc;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #b5b0a9;
+}
+
+/* 3D Button System — subtle slab effect */
+.btn-3d-dark {
+  box-shadow: 0 1px 0 0 #0d0b09;
+}
+.btn-3d-dark:active:not(:disabled) {
+  box-shadow: none;
+  transform: translateY(1px);
+}
+
+.btn-3d-destructive {
+  box-shadow: 0 1px 0 0 #8a2d2d;
+}
+.btn-3d-destructive:active:not(:disabled) {
+  box-shadow: none;
+  transform: translateY(1px);
+}
+
+.btn-3d-outline {
+  box-shadow: 0 1px 0 0 #c8c3bc;
+}
+.btn-3d-outline:active:not(:disabled) {
+  box-shadow: none;
+  transform: translateY(1px);
+}
+
+.btn-3d-secondary {
+  box-shadow: 0 1px 0 0 #d6d2cc;
+}
+.btn-3d-secondary:active:not(:disabled) {
+  box-shadow: none;
+  transform: translateY(1px);
+}
+
+.btn-3d-success {
+  box-shadow: 0 2px 0 0 #1B6B42;
+}
+.btn-3d-success:active:not(:disabled) {
+  box-shadow: none;
+  transform: translateY(2px);
+}
