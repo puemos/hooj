@@ -15,11 +15,7 @@ where
     let project = proj_lock.as_mut().ok_or(HoojError::NoProject)?;
 
     // Save current state for undo
-    state
-        .history
-        .lock()
-        .unwrap()
-        .push(project.segments.clone());
+    state.history.lock().unwrap().push(project.segments.clone());
 
     // Apply mutation
     mutate(&mut project.segments)?;
@@ -165,9 +161,7 @@ pub fn update_segment_bounds(
     state: State<'_, AppState>,
 ) -> Result<Vec<Segment>, HoojError> {
     if start >= end {
-        return Err(HoojError::InvalidSegment(
-            "Start must be before end".into(),
-        ));
+        return Err(HoojError::InvalidSegment("Start must be before end".into()));
     }
 
     // Read video duration before with_project_segments re-acquires the lock

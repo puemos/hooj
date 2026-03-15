@@ -63,11 +63,18 @@ where
     let reader = BufReader::new(stderr);
     let mut lines = reader.lines();
 
-    while let Some(line) = lines.next_line().await.map_err(|e| HoojError::FFmpeg(e.to_string()))? {
+    while let Some(line) = lines
+        .next_line()
+        .await
+        .map_err(|e| HoojError::FFmpeg(e.to_string()))?
+    {
         on_stderr_line(&line);
     }
 
-    let status = child.wait().await.map_err(|e| HoojError::FFmpeg(e.to_string()))?;
+    let status = child
+        .wait()
+        .await
+        .map_err(|e| HoojError::FFmpeg(e.to_string()))?;
     if !status.success() {
         return Err(HoojError::FFmpeg(format!(
             "ffmpeg exited with code {:?}",

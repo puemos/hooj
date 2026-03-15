@@ -128,7 +128,12 @@ fn build_audio_filter(speed: f64, volume: f64) -> String {
 }
 
 /// Build ffmpeg args to concatenate segments using a filelist.
-pub fn concat_args(filelist_path: &str, output: &str, format: &ExportFormat, quality: &ExportQuality) -> Vec<String> {
+pub fn concat_args(
+    filelist_path: &str,
+    output: &str,
+    format: &ExportFormat,
+    quality: &ExportQuality,
+) -> Vec<String> {
     let mut args = vec![
         "-y".into(),
         "-f".into(),
@@ -244,7 +249,10 @@ mod tests {
         // -ss should be before -i for fast seeking
         let ss_idx = args.iter().position(|a| a == "-ss").unwrap();
         let i_idx = args.iter().position(|a| a == "-i").unwrap();
-        assert!(ss_idx < i_idx, "-ss must come before -i for stream copy path");
+        assert!(
+            ss_idx < i_idx,
+            "-ss must come before -i for stream copy path"
+        );
         // Should normalize timestamps for concat compatibility
         assert!(args.contains(&"-avoid_negative_ts".to_string()));
         assert!(args.contains(&"make_zero".to_string()));
@@ -281,7 +289,10 @@ mod tests {
         let args = extract_segment_args("/input.mp4", 0.0, 60.0, 32.0, 1.0, 30.0, "/output.mp4");
         let vf_idx = args.iter().position(|a| a == "-vf").unwrap();
         let video_filter = &args[vf_idx + 1];
-        assert!(video_filter.contains("fps=30.0000"), "extreme speed must cap at source fps: {video_filter}");
+        assert!(
+            video_filter.contains("fps=30.0000"),
+            "extreme speed must cap at source fps: {video_filter}"
+        );
         assert!(video_filter.starts_with("setpts="));
     }
 
@@ -291,7 +302,10 @@ mod tests {
         let args = extract_segment_args("/input.mp4", 0.0, 60.0, 32.0, 1.0, 60.0, "/output.mp4");
         let vf_idx = args.iter().position(|a| a == "-vf").unwrap();
         let video_filter = &args[vf_idx + 1];
-        assert!(video_filter.contains("fps=60.0000"), "must use source fps, not hardcoded 30: {video_filter}");
+        assert!(
+            video_filter.contains("fps=60.0000"),
+            "must use source fps, not hardcoded 30: {video_filter}"
+        );
     }
 
     #[test]
@@ -299,7 +313,10 @@ mod tests {
         let args = extract_segment_args("/input.mp4", 0.0, 10.0, 4.0, 1.0, 30.0, "/output.mp4");
         let vf_idx = args.iter().position(|a| a == "-vf").unwrap();
         let video_filter = &args[vf_idx + 1];
-        assert!(!video_filter.contains("fps="), "moderate speed should not include fps cap: {video_filter}");
+        assert!(
+            !video_filter.contains("fps="),
+            "moderate speed should not include fps cap: {video_filter}"
+        );
     }
 
     #[test]
@@ -325,7 +342,12 @@ mod tests {
 
     #[test]
     fn test_concat_args_mp4_high() {
-        let args = concat_args("/tmp/filelist.txt", "/output.mp4", &ExportFormat::Mp4H264, &ExportQuality::High);
+        let args = concat_args(
+            "/tmp/filelist.txt",
+            "/output.mp4",
+            &ExportFormat::Mp4H264,
+            &ExportQuality::High,
+        );
         assert!(args.contains(&"libx264".to_string()));
         assert!(args.contains(&"aac".to_string()));
         assert!(args.contains(&"-crf".to_string()));
@@ -340,7 +362,12 @@ mod tests {
 
     #[test]
     fn test_concat_args_mp4_low() {
-        let args = concat_args("/tmp/filelist.txt", "/output.mp4", &ExportFormat::Mp4H264, &ExportQuality::Low);
+        let args = concat_args(
+            "/tmp/filelist.txt",
+            "/output.mp4",
+            &ExportFormat::Mp4H264,
+            &ExportQuality::Low,
+        );
         assert!(args.contains(&"28".to_string()));
         assert!(args.contains(&"faster".to_string()));
         assert!(args.contains(&"128k".to_string()));
@@ -348,7 +375,12 @@ mod tests {
 
     #[test]
     fn test_concat_args_webm() {
-        let args = concat_args("/tmp/filelist.txt", "/output.webm", &ExportFormat::WebmVp9, &ExportQuality::Medium);
+        let args = concat_args(
+            "/tmp/filelist.txt",
+            "/output.webm",
+            &ExportFormat::WebmVp9,
+            &ExportQuality::Medium,
+        );
         assert!(args.contains(&"libvpx-vp9".to_string()));
         assert!(args.contains(&"libopus".to_string()));
         assert!(args.contains(&"-crf".to_string()));
@@ -360,7 +392,12 @@ mod tests {
 
     #[test]
     fn test_concat_args_mov() {
-        let args = concat_args("/tmp/filelist.txt", "/output.mov", &ExportFormat::MovProres, &ExportQuality::High);
+        let args = concat_args(
+            "/tmp/filelist.txt",
+            "/output.mov",
+            &ExportFormat::MovProres,
+            &ExportQuality::High,
+        );
         assert!(args.contains(&"prores_ks".to_string()));
         assert!(args.contains(&"pcm_s16le".to_string()));
         assert!(args.contains(&"-profile:v".to_string()));
@@ -369,7 +406,12 @@ mod tests {
 
     #[test]
     fn test_concat_args_mov_low() {
-        let args = concat_args("/tmp/filelist.txt", "/output.mov", &ExportFormat::MovProres, &ExportQuality::Low);
+        let args = concat_args(
+            "/tmp/filelist.txt",
+            "/output.mov",
+            &ExportFormat::MovProres,
+            &ExportQuality::Low,
+        );
         assert!(args.contains(&"0".to_string())); // ProRes Proxy profile
     }
 

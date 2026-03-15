@@ -5,9 +5,7 @@ use crate::infra::ffmpeg::{commands as ffcmd, process};
 use crate::state::AppState;
 
 #[tauri::command]
-pub async fn generate_thumbnails(
-    state: State<'_, AppState>,
-) -> Result<Vec<String>, HoojError> {
+pub async fn generate_thumbnails(state: State<'_, AppState>) -> Result<Vec<String>, HoojError> {
     let (source_path, duration) = {
         let proj_lock = state.project.lock().unwrap();
         let project = proj_lock.as_ref().ok_or(HoojError::NoProject)?;

@@ -80,11 +80,7 @@ fn parse_fps(rate_str: &str) -> f64 {
     if let Some((num, den)) = rate_str.split_once('/') {
         let n: f64 = num.parse().unwrap_or(30.0);
         let d: f64 = den.parse().unwrap_or(1.0);
-        if d == 0.0 {
-            30.0
-        } else {
-            n / d
-        }
+        if d == 0.0 { 30.0 } else { n / d }
     } else {
         rate_str.parse().unwrap_or(30.0)
     }

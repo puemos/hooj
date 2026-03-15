@@ -1,8 +1,8 @@
 use std::sync::atomic::{AtomicUsize, Ordering};
 use std::sync::{Arc, Mutex};
 
-use tauri::ipc::Channel;
 use tauri::State;
+use tauri::ipc::Channel;
 use tokio::sync::Semaphore;
 
 use crate::domain::error::HoojError;
@@ -53,12 +53,13 @@ pub async fn export_video(
         let total = total_segments;
 
         let handle = tokio::spawn(async move {
-            let _permit = sem.acquire().await.map_err(|_| {
-                HoojError::FFmpeg("semaphore closed".into())
-            })?;
+            let _permit = sem
+                .acquire()
+                .await
+                .map_err(|_| HoojError::FFmpeg("semaphore closed".into()))?;
 
-            let needs_reencode = (seg.speed - 1.0).abs() > f64::EPSILON
-                || (seg.volume - 1.0).abs() > f64::EPSILON;
+            let needs_reencode =
+                (seg.speed - 1.0).abs() > f64::EPSILON || (seg.volume - 1.0).abs() > f64::EPSILON;
 
             let args = ffcmd::extract_segment_args(
                 &source,
@@ -86,8 +87,7 @@ pub async fn export_video(
                     if let Some(p) = progress::parse_progress_line(line, segment_duration_us) {
                         let mut pct = progress_percent_clone.lock().unwrap();
                         *pct = p;
-                        let overall =
-                            ((seg_idx as f64 + p) / total as f64) * 100.0;
+                        let overall = ((seg_idx as f64 + p) / total as f64) * 100.0;
                         let _ = progress_channel.send(ExportEvent::Progress {
                             percent: overall,
                             current_segment: seg_idx + 1,
@@ -113,8 +113,7 @@ pub async fn export_video(
 
     let mut segment_files = Vec::with_capacity(total_segments);
     for result in results {
-        let output_file = result
-            .map_err(|e| HoojError::FFmpeg(e.to_string()))??;
+        let output_file = result.map_err(|e| HoojError::FFmpeg(e.to_string()))??;
         segment_files.push(output_file);
     }
 
@@ -134,7 +133,12 @@ pub async fn export_video(
     std::fs::write(&filelist_path, filelist_content)?;
 
     // Step 3: Concatenate
-    let concat_args = ffcmd::concat_args(&filelist_path, &settings.output_path, &settings.format, &settings.quality);
+    let concat_args = ffcmd::concat_args(
+        &filelist_path,
+        &settings.output_path,
+        &settings.format,
+        &settings.quality,
+    );
     process::run_ffmpeg(concat_args).await?;
 
     // Step 4: Cleanup
