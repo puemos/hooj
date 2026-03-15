@@ -90,3 +90,47 @@ jobs:
           releaseDraft: false
           prerelease: false
           args: ${{ matrix.args }}
+
+  publish-homebrew:
+    name: Bump Homebrew Tap
+    needs: release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout homebrew-tap
+        uses: actions/checkout@v4
+        with:
+          repository: puemos/homebrew-tap
+          token: ${{ secrets.GH_TOKEN }}
+          path: homebrew-tap
+
+      - name: Get release info
+        id: release
+        run: |
+          VERSION="${GITHUB_REF#refs/tags/v}"
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+
+      - name: Update Cask
+        env:
+          VERSION: ${{ steps.release.outputs.version }}
+        run: |
+          cd homebrew-tap
+
+          # Get SHA256 for macOS ARM
+          ARM_URL="https://github.com/puemos/hooj/releases/download/v${VERSION}/Hooj_aarch64.app.tar.gz"
+          ARM_SHA=$(curl -sL "$ARM_URL" | sha256sum | cut -d' ' -f1)
+
+          # Get SHA256 for macOS Intel
+          INTEL_URL="https://github.com/puemos/hooj/releases/download/v${VERSION}/Hooj_x64.app.tar.gz"
+          INTEL_SHA=$(curl -sL "$INTEL_URL" | sha256sum | cut -d' ' -f1)
+
+          # Update Cask
+          sed -i "s/version \"[^\"]*\"/version \"${VERSION}\"/" Casks/hooj.rb
+          sed -i "s/sha256 arm:   \"[^\"]*\"/sha256 arm:   \"${ARM_SHA}\"/" Casks/hooj.rb
+          sed -i "s/intel: \"[^\"]*\"/intel: \"${INTEL_SHA}\"/" Casks/hooj.rb
+
+          # Commit and push
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git diff --staged --quiet || git commit -m "Bump hooj to v${VERSION}"
+          git push
