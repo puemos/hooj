@@ -4,77 +4,77 @@
 
 <h1 align="center">Hooj</h1>
 
-A desktop video editor built with Tauri and React.
+<p align="center">
+  A lightweight desktop video editor built with Tauri and React.
+</p>
 
-<!-- screenshot -->
+<p align="center">
+  <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="License" /></a>
+  <img src="https://img.shields.io/badge/platform-macOS-lightgrey.svg" alt="Platform" />
+  <a href="https://github.com/puemos/hooj/actions"><img src="https://img.shields.io/github/actions/workflow/status/puemos/hooj/ci.yml?branch=main" alt="CI" /></a>
+</p>
+
+<p align="center">
+  <img src="assets/screenshot.png" width="800" alt="Hooj — video editor with timeline, speed controls, and segment management" />
+</p>
 
 ## Features
 
-- Import video files (MP4, MKV, AVI, MOV, WebM)
-- Split, trim, reorder, duplicate, and delete segments
-- Per-segment speed (0.1x to 32x) and volume (0 to 200%)
-- Drag-and-drop timeline with thumbnail previews
-- Undo/redo with 50-step history
-- Export to MP4 (H.264), WebM (VP9), or MOV (ProRes)
-- Three quality presets: low, medium, high
-- Real-time export progress
-- Keyboard shortcuts for common operations
-- Stream copy when no speed or volume changes are applied
+- **Multi-format import** — MP4, MKV, AVI, MOV, and WebM
+- **Nondestructive editing** — Split, trim, reorder, duplicate, and delete segments
+- **Speed & volume control** — Per-segment speed (0.1x–32x) and volume (0–200%)
+- **Visual timeline** — Drag-and-drop segments with thumbnail previews
+- **Undo/redo** — 50-step history
+- **Flexible export** — MP4 (H.264), WebM (VP9), or MOV (ProRes) with three quality presets
+- **Real-time progress** — Live export progress feedback
+- **Smart encoding** — Stream copy when no speed or volume changes are applied
+- **Keyboard shortcuts** — Common operations accessible from the keyboard
 
-## Requirements
+## Download
 
-- macOS (other platforms untested)
+> macOS only. Other platforms are untested.
+
+Grab the latest release from the [Releases](https://github.com/puemos/hooj/releases) page.
+
+## Built With
+
+[Tauri v2](https://tauri.app) · [React 19](https://react.dev) · [Rust](https://www.rust-lang.org) · [FFmpeg](https://ffmpeg.org)
+
+## Development
+
+### Prerequisites
+
+- macOS
 - Rust (stable, 2024 edition)
 - Node.js and pnpm
-- FFmpeg (`brew install ffmpeg` on macOS)
+- FFmpeg (`brew install ffmpeg`)
 
-## Getting Started
+### Setup
 
-1. Clone the repo
+```bash
+git clone https://github.com/puemos/hooj.git
+cd hooj
+scripts/setup-ffmpeg.sh
+cd frontend && pnpm install
+```
 
-   ```bash
-   git clone https://github.com/puemos/hooj.git
-   cd hooj
-   ```
+### Run
 
-2. Set up FFmpeg sidecar
+```bash
+cargo tauri dev
+```
 
-   ```bash
-   scripts/setup-ffmpeg.sh
-   ```
-
-3. Install frontend dependencies
-
-   ```bash
-   cd frontend && pnpm install
-   ```
-
-4. Run the app
-
-   ```bash
-   cargo tauri dev
-   ```
-
-## Building
+### Build
 
 ```bash
 cargo tauri build
 ```
 
-Produces a platform-specific application bundle.
-
-## Tests
-
-Rust unit tests for domain logic, history, and FFmpeg progress parsing.
+### Tests
 
 ```bash
-cargo test
-```
-
-Frontend tests using Vitest.
-
-```bash
-cd frontend && pnpm test -- --run
+cargo test                           # Rust tests
+cd frontend && pnpm test -- --run    # Frontend tests
 ```
 
 ## Architecture
